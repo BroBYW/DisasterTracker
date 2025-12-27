@@ -7,7 +7,7 @@
              BackgroundColor="#1E1E1E"
              Title="Disaster Coordinator">
 
-    <Grid RowDefinitions="Auto, Auto, *, Auto" Padding="10" RowSpacing="10">
+    <Grid RowDefinitions="Auto, Auto, *" Padding="10" RowSpacing="10">
 
         <Border Grid.Row="0" Stroke="#444" BackgroundColor="#2D2D2D" Padding="10" StrokeShape="RoundRectangle 10">
             <Grid ColumnDefinitions="*, Auto">
@@ -16,29 +16,28 @@
                     <Label Text="{Binding LatitudeDisplay}" TextColor="#FFCC00" FontAttributes="Bold"/>
                     <Label Text="{Binding LongitudeDisplay}" TextColor="#FFCC00" FontAttributes="Bold"/>
                 </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="1" HorizontalOptions="End">
+                <VerticalStackLayout Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" IsVisible="{Binding IsIdVisible}">
                     <Label Text="ID:" TextColor="Gray" FontSize="10"/>
                     <Label Text="{Binding IncidentId}" TextColor="White" FontAttributes="Bold" FontSize="18"/>
                 </VerticalStackLayout>
             </Grid>
         </Border>
 
-        <VerticalStackLayout Grid.Row="1" Spacing="8">
+        <VerticalStackLayout x:Name="SaveSection" Grid.Row="1" Spacing="8">
             <Border Stroke="Gray" 
-            StrokeThickness="1" 
-            BackgroundColor="#333" 
-            Padding="0" 
-            StrokeShape="RoundRectangle 5">
-
+                    StrokeThickness="1" 
+                    BackgroundColor="#333" 
+                    Padding="0" 
+                    StrokeShape="RoundRectangle 5">
                 <Picker Title="Select Disaster Type" 
-                ItemsSource="{Binding DisasterTypes}" 
-                SelectedItem="{Binding SelectedDisasterType}" 
-                TextColor="White" TitleColor="#AAAAAA"
-                HorizontalTextAlignment="Center"/>
+                        ItemsSource="{Binding DisasterTypes}" 
+                        SelectedItem="{Binding SelectedDisasterType}" 
+                        TextColor="White" TitleColor="#AAAAAA"
+                        HorizontalTextAlignment="Center"/>
             </Border>
 
             <Button Text="SAVE &amp; PIN LOCATION" Command="{Binding SaveLogCommand}" 
-            BackgroundColor="#FF4444" FontAttributes="Bold"/>
+                    BackgroundColor="#FF4444" FontAttributes="Bold" TextColor="White"/>
         </VerticalStackLayout>
 
         <Grid Grid.Row="2">
@@ -51,37 +50,110 @@
                    TranslationY="-20" InputTransparent="True"/>
 
             <Label Text="Drag Map to Select" TextColor="Black" BackgroundColor="White" Opacity="0.7"
-                   HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,10" InputTransparent="True"/>
+                   HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,60" InputTransparent="True"/>
+
+            <VerticalStackLayout VerticalOptions="End" HorizontalOptions="End" Margin="0,0,15,100" Spacing="10">
+                <Button Text="+" Clicked="OnZoomIn" WidthRequest="50" HeightRequest="50" CornerRadius="25" Padding="0" BackgroundColor="White" TextColor="Black" FontAttributes="Bold" FontSize="24"/>
+                <Button Text="-" Clicked="OnZoomOut" WidthRequest="50" HeightRequest="50" CornerRadius="25" Padding="0" BackgroundColor="White" TextColor="Black" FontAttributes="Bold" FontSize="24"/>
+            </VerticalStackLayout>
         </Grid>
 
-        <VerticalStackLayout Grid.Row="3" HeightRequest="150">
-            <Label Text="HISTORY (Tap to View)" TextColor="White" FontAttributes="Bold" Margin="0,5"/>
+        <Border x:Name="HistoryDrawer"
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                VerticalOptions="End"
+                HeightRequest="400"
+                TranslationY="340" 
+                BackgroundColor="#222"
+                Stroke="#444"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 20,20,0,0"
+                Padding="0"
+                Margin="-10,0,-10,-10">
 
-            <CollectionView ItemsSource="{Binding IncidentHistory}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border BackgroundColor="#333" 
-                        Padding="10" 
-                        Margin="0,2" 
-                        StrokeShape="RoundRectangle 10"
-                        StrokeThickness="0">
+            <Grid RowDefinitions="60, *">
+                <Grid Grid.Row="0" BackgroundColor="#333">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDrawerToggle" />
+                        <PanGestureRecognizer PanUpdated="OnDrawerPan" />
+                    </Grid.GestureRecognizers>
 
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnItemTapped" NumberOfTapsRequired="1" />
-                            </Border.GestureRecognizers>
+                    <BoxView Color="Gray" CornerRadius="2" HeightRequest="5" WidthRequest="40" 
+                             VerticalOptions="Start" HorizontalOptions="Center" Margin="0,12,0,0" InputTransparent="True"/>
+                    <Label Text="HISTORY (Drag or Tap)" TextColor="White" FontAttributes="Bold" 
+                           VerticalOptions="Center" HorizontalOptions="Center" TranslationY="5" InputTransparent="True"/>
+                </Grid>
 
-                            <Grid ColumnDefinitions="*, Auto">
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding DisasterType}" TextColor="#FF4444" FontAttributes="Bold"/>
-                                    <Label Text="{Binding LocationCoordinates}" TextColor="Gray" FontSize="10"/>
-                                </VerticalStackLayout>
-                                <Label Grid.Column="1" Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}" 
-                               TextColor="Gray" VerticalOptions="Center"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding IncidentHistory}" BackgroundColor="#1E1E1E">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BackgroundColor="#2D2D2D" 
+                                    Padding="10" 
+                                    Margin="10,5" 
+                                    StrokeShape="RoundRectangle 10"
+                                    StrokeThickness="0">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnItemTapped" NumberOfTapsRequired="1" />
+                                </Border.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding DisasterType}" TextColor="#FF4444" FontAttributes="Bold"/>
+                                        <Label Text="{Binding LocationCoordinates}" TextColor="Gray" FontSize="10"/>
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}" 
+                                           TextColor="Gray" VerticalOptions="Center"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Border>
+
+        <Border x:Name="DetailPanel"
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                VerticalOptions="End"
+                HeightRequest="300" 
+                BackgroundColor="#2D2D2D"
+                Stroke="#444"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 20,20,0,0"
+                Padding="20"
+                Margin="-10,0,-10,-10"
+                IsVisible="False">
+
+            <VerticalStackLayout Spacing="10">
+                <Grid ColumnDefinitions="*, Auto">
+                    <Label Text="INCIDENT DETAILS" TextColor="Gray" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Button Grid.Column="1" Text="✕" Clicked="OnCloseDetail" 
+                            BackgroundColor="Transparent" TextColor="White" 
+                            FontSize="24" Padding="0" HeightRequest="40" WidthRequest="40"/>
+                </Grid>
+
+                <BoxView Color="#444" HeightRequest="1" Margin="0,0,0,10"/>
+
+                <Label x:Name="DetailTypeLabel" Text="Fire" FontSize="28" FontAttributes="Bold" TextColor="#FF4444"/>
+
+                <Grid ColumnDefinitions="60, *" RowDefinitions="Auto, Auto" RowSpacing="5">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Time:" TextColor="Gray"/>
+                    <Label Grid.Row="0" Grid.Column="1" x:Name="DetailTimeLabel" Text="10:00 AM" TextColor="White" FontAttributes="Bold"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Text="Loc:" TextColor="Gray"/>
+                    <Label Grid.Row="1" Grid.Column="1" x:Name="DetailLocationLabel" Text="1.234, 5.678" TextColor="White"/>
+                </Grid>
+
+                <Button Text="DELETE LOG" 
+                        Clicked="OnDeleteLog" 
+                        BackgroundColor="#333" 
+                        TextColor="#FF4444" 
+                        BorderColor="#FF4444" 
+                        BorderWidth="1"
+                        FontAttributes="Bold"
+                        Margin="0,15,0,0"/>
+            </VerticalStackLayout>
+        </Border>
+
     </Grid>
 </ContentPage>

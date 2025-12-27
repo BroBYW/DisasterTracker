@@ -14,27 +14,27 @@ namespace FinalAssignment.ViewModels
     {
         private readonly DatabaseService _dbService;
 
-        // Collections
         [ObservableProperty]
         ObservableCollection<IncidentLog> incidentHistory;
 
         [ObservableProperty]
         ObservableCollection<Pin> mapPins;
 
-        // Dropdown List
         public List<string> DisasterTypes { get; } = new List<string>
         {
             "Flood", "Fire", "Landslide", "Medical", "Earthquake", "Road Accident"
         };
 
-        // Inputs
         [ObservableProperty]
         string selectedDisasterType;
 
         [ObservableProperty]
         string incidentId;
 
-        // Display (Linked to Dragging)
+        // NEW: Controls visibility of the ID in the top-right
+        [ObservableProperty]
+        bool isIdVisible;
+
         [ObservableProperty]
         string latitudeDisplay = "Drag Map to Select";
 
@@ -50,15 +50,27 @@ namespace FinalAssignment.ViewModels
             IncidentHistory = new ObservableCollection<IncidentLog>();
             MapPins = new ObservableCollection<Pin>();
 
-            GenerateNewId();
-            Task.Run(LoadDataAsync); // Load previous pins
+            // Don't generate ID here. Start hidden.
+            IsIdVisible = false;
+
+            Task.Run(LoadDataAsync);
             InitializeSensorsAsync();
         }
 
-        private void GenerateNewId()
+        // Helper to generate the ID string
+        private string GenerateIdString()
         {
-            string randomSegment = Guid.NewGuid().ToString().Substring(0, 4).ToUpper();
-            IncidentId = $"SOS-{randomSegment}";
+            return $"SOS-{Guid.NewGuid().ToString().Substring(0, 4).ToUpper()}";
+        }
+
+        public void ResetLocationDisplay()
+        {
+            LatitudeDisplay = "Drag Map to Select";
+            LongitudeDisplay = "...";
+
+            // Hide the ID when resetting to input mode
+            IncidentId = string.Empty;
+            IsIdVisible = false;
         }
 
         public void UpdateSelectionFromMapDrag(Location location)
@@ -68,21 +80,14 @@ namespace FinalAssignment.ViewModels
         }
 
         [RelayCommand]
-        public Task InitializeSensorsAsync() // <--- REMOVED 'async'
+        public Task InitializeSensorsAsync()
         {
             var access = Connectivity.Current.NetworkAccess;
-
             if (access == NetworkAccess.Internet)
-            {
-                ConnectivityStatus = "ONLINE";     
-            }
+                ConnectivityStatus = "ONLINE";
             else
-            {
                 ConnectivityStatus = "OFFLINE MODE";
 
-            }
-
-            // Tells the caller "I am done immediately"
             return Task.CompletedTask;
         }
 
@@ -101,9 +106,12 @@ namespace FinalAssignment.ViewModels
                 return;
             }
 
+            // Generate ID specifically for this Save
+            string newId = GenerateIdString();
+
             var newLog = new IncidentLog
             {
-                IncidentId = IncidentId,
+                IncidentId = newId,
                 DisasterType = SelectedDisasterType,
                 LocationCoordinates = $"{LatitudeDisplay},{LongitudeDisplay}",
                 Timestamp = DateTime.Now,
@@ -112,13 +120,28 @@ namespace FinalAssignment.ViewModels
 
             await _dbService.AddLogAsync(newLog);
 
-            // Update UI
             IncidentHistory.Insert(0, newLog);
             AddPinToMap(newLog);
 
             await Application.Current.MainPage.DisplayAlert("Saved", "Incident Logged", "OK");
-            GenerateNewId();
+
+            // Reset UI for next input
             SelectedDisasterType = null;
+            // Note: We do NOT show the ID after saving, we just go back to clean input state.
+        }
+
+        public async Task DeleteLogAsync(IncidentLog log)
+        {
+            if (log == null) return;
+
+            await _dbService.DeleteLogAsync(log);
+            IncidentHistory.Remove(log);
+
+            var pinToRemove = MapPins.FirstOrDefault(p => p.Address == log.IncidentId);
+            if (pinToRemove != null)
+            {
+                MapPins.Remove(pinToRemove);
+            }
         }
 
         private async Task LoadDataAsync()
@@ -147,7 +170,7 @@ namespace FinalAssignment.ViewModels
                 {
                     Label = log.DisasterType,
                     Address = $"{log.IncidentId}",
-                    Type = PinType.Place, // Standard Red Pin
+                    Type = PinType.Place,
                     Location = new Location(lat, lon)
                 };
                 MapPins.Add(pin);

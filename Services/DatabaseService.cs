@@ -26,5 +26,12 @@ namespace FinalAssignment.Services
             await Init();
             return await _database.Table<IncidentLog>().OrderByDescending(x => x.Timestamp).ToListAsync();
         }
+
+        // --- NEW: DELETE METHOD ---
+        public async Task DeleteLogAsync(IncidentLog log)
+        {
+            await Init();
+            await _database.DeleteAsync(log);
+        }
     }
 }
