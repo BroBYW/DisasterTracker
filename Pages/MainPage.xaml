@@ -4,21 +4,21 @@
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              xmlns:vm="clr-namespace:FinalAssignment.ViewModels"
              x:Class="FinalAssignment.Pages.MainPage"
-             BackgroundColor="#1E1E1E"
+             BackgroundColor="white"
              Title="Disaster Coordinator">
 
     <Grid RowDefinitions="Auto, Auto, *" Padding="10" RowSpacing="10">
 
-        <Border Grid.Row="0" Stroke="#444" BackgroundColor="#2D2D2D" Padding="10" StrokeShape="RoundRectangle 10">
+        <Border Grid.Row="0" Stroke="#444" BackgroundColor="White" Padding="10" StrokeShape="RoundRectangle 10">
             <Grid ColumnDefinitions="*, Auto">
                 <VerticalStackLayout>
                     <Label Text="SELECTED LOCATION" TextColor="Gray" FontSize="10"/>
-                    <Label Text="{Binding LatitudeDisplay}" TextColor="#FFCC00" FontAttributes="Bold"/>
-                    <Label Text="{Binding LongitudeDisplay}" TextColor="#FFCC00" FontAttributes="Bold"/>
+                    <Label Text="{Binding LatitudeDisplay}" TextColor="Black" FontAttributes="Bold"/>
+                    <Label Text="{Binding LongitudeDisplay}" TextColor="Black" FontAttributes="Bold"/>
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" IsVisible="{Binding IsIdVisible}">
                     <Label Text="ID:" TextColor="Gray" FontSize="10"/>
-                    <Label Text="{Binding IncidentId}" TextColor="White" FontAttributes="Bold" FontSize="18"/>
+                    <Label Text="{Binding IncidentId}" TextColor="Black" FontAttributes="Bold" FontSize="18"/>
                 </VerticalStackLayout>
             </Grid>
         </Border>
@@ -26,13 +26,13 @@
         <VerticalStackLayout x:Name="SaveSection" Grid.Row="1" Spacing="8">
             <Border Stroke="Gray" 
                     StrokeThickness="1" 
-                    BackgroundColor="#333" 
+                    BackgroundColor="White" 
                     Padding="0" 
                     StrokeShape="RoundRectangle 5">
                 <Picker Title="Select Disaster Type" 
                         ItemsSource="{Binding DisasterTypes}" 
                         SelectedItem="{Binding SelectedDisasterType}" 
-                        TextColor="White" TitleColor="#AAAAAA"
+                        TextColor="Black" TitleColor="#AAAAAA"
                         HorizontalTextAlignment="Center"/>
             </Border>
 
@@ -64,15 +64,15 @@
                 VerticalOptions="End"
                 HeightRequest="400"
                 TranslationY="340" 
-                BackgroundColor="#222"
-                Stroke="#444"
+                BackgroundColor="White"
+                Stroke="White"
                 StrokeThickness="1"
                 StrokeShape="RoundRectangle 20,20,0,0"
                 Padding="0"
                 Margin="-10,0,-10,-10">
 
             <Grid RowDefinitions="60, *">
-                <Grid Grid.Row="0" BackgroundColor="#333">
+                <Grid Grid.Row="0" BackgroundColor="White">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnDrawerToggle" />
                         <PanGestureRecognizer PanUpdated="OnDrawerPan" />
@@ -80,14 +80,14 @@
 
                     <BoxView Color="Gray" CornerRadius="2" HeightRequest="5" WidthRequest="40" 
                              VerticalOptions="Start" HorizontalOptions="Center" Margin="0,12,0,0" InputTransparent="True"/>
-                    <Label Text="HISTORY (Drag or Tap)" TextColor="White" FontAttributes="Bold" 
+                    <Label Text="HISTORY (Drag or Tap)" TextColor="Black" FontAttributes="Bold" 
                            VerticalOptions="Center" HorizontalOptions="Center" TranslationY="5" InputTransparent="True"/>
                 </Grid>
 
-                <CollectionView Grid.Row="1" ItemsSource="{Binding IncidentHistory}" BackgroundColor="#1E1E1E">
+                <CollectionView Grid.Row="1" ItemsSource="{Binding IncidentHistory}" BackgroundColor="White">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Border BackgroundColor="#2D2D2D" 
+                            <Border BackgroundColor="WhiteSmoke" 
                                     Padding="10" 
                                     Margin="10,5" 
                                     StrokeShape="RoundRectangle 10"
@@ -98,8 +98,8 @@
 
                                 <Grid ColumnDefinitions="*, Auto">
                                     <VerticalStackLayout>
-                                        <Label Text="{Binding DisasterType}" TextColor="#FF4444" FontAttributes="Bold"/>
-                                        <Label Text="{Binding LocationCoordinates}" TextColor="Gray" FontSize="10"/>
+                                        <Label Text="{Binding DisasterType}" TextColor="Black" FontAttributes="Bold"/>
+                                        <Label Text="{Binding LocationCoordinates}" TextColor="Grey" FontSize="10" />
                                     </VerticalStackLayout>
                                     <Label Grid.Column="1" Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}" 
                                            TextColor="Gray" VerticalOptions="Center"/>
@@ -116,8 +116,8 @@
                 Grid.RowSpan="3"
                 VerticalOptions="End"
                 HeightRequest="300" 
-                BackgroundColor="#2D2D2D"
-                Stroke="#444"
+                BackgroundColor="white"
+                Stroke="Black"
                 StrokeThickness="1"
                 StrokeShape="RoundRectangle 20,20,0,0"
                 Padding="20"
@@ -126,28 +126,27 @@
 
             <VerticalStackLayout Spacing="10">
                 <Grid ColumnDefinitions="*, Auto">
-                    <Label Text="INCIDENT DETAILS" TextColor="Gray" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Label Text="INCIDENT DETAILS" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center"/>
                     <Button Grid.Column="1" Text="✕" Clicked="OnCloseDetail" 
-                            BackgroundColor="Transparent" TextColor="White" 
+                            BackgroundColor="Transparent" TextColor="Black" 
                             FontSize="24" Padding="0" HeightRequest="40" WidthRequest="40"/>
                 </Grid>
 
-                <BoxView Color="#444" HeightRequest="1" Margin="0,0,0,10"/>
+                <BoxView Color="black" HeightRequest="1" Margin="0,0,0,10"/>
 
                 <Label x:Name="DetailTypeLabel" Text="Fire" FontSize="28" FontAttributes="Bold" TextColor="#FF4444"/>
 
                 <Grid ColumnDefinitions="60, *" RowDefinitions="Auto, Auto" RowSpacing="5">
-                    <Label Grid.Row="0" Grid.Column="0" Text="Time:" TextColor="Gray"/>
-                    <Label Grid.Row="0" Grid.Column="1" x:Name="DetailTimeLabel" Text="10:00 AM" TextColor="White" FontAttributes="Bold"/>
-
-                    <Label Grid.Row="1" Grid.Column="0" Text="Loc:" TextColor="Gray"/>
-                    <Label Grid.Row="1" Grid.Column="1" x:Name="DetailLocationLabel" Text="1.234, 5.678" TextColor="White"/>
+                    <Label Grid.Row="0" Grid.Column="0" Text="🕒" FontSize="18" TextColor="Black"/>
+                    <Label Grid.Row="0" Grid.Column="1" x:Name="DetailTimeLabel" Text="10:00 AM" TextColor="#1F2937" FontSize="16" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Label Grid.Row="1" Grid.Column="0" Text="📍" FontSize="18" TextColor="Black"/>
+                    <Label Grid.Row="1" Grid.Column="1" x:Name="DetailLocationLabel" Text="1.234, 5.678" TextColor="#1F2937" FontSize="16" VerticalOptions="Center"/>
                 </Grid>
 
                 <Button Text="DELETE LOG" 
                         Clicked="OnDeleteLog" 
-                        BackgroundColor="#333" 
-                        TextColor="#FF4444" 
+                        BackgroundColor="red" 
+                        TextColor="White" 
                         BorderColor="#FF4444" 
                         BorderWidth="1"
                         FontAttributes="Bold"
