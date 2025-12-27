@@ -16,7 +16,7 @@ namespace FinalAssignment.Pages
         // DRAWER SETTINGS
         private bool _isDrawerOpen = false;
         // Height 600 - Visible 60 = 540 Hidden
-        private const double DrawerHiddenY = 540;
+        private const double DrawerHiddenY = 340;
         private const double DrawerVisibleY = 0;
         private double _startDragY;
 
