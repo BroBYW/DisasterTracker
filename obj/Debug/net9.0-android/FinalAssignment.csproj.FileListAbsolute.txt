@@ -125,6 +125,7 @@ D:\Mobile Development\FinalAssignment\FinalAssignment\obj\Debug\net9.0-android\F
 D:\Mobile Development\FinalAssignment\FinalAssignment\obj\Debug\net9.0-android\FinalAssignment.AssemblyInfoInputs.cache
 D:\Mobile Development\FinalAssignment\FinalAssignment\obj\Debug\net9.0-android\FinalAssignment.AssemblyInfo.cs
 D:\Mobile Development\FinalAssignment\FinalAssignment\obj\Debug\net9.0-android\FinalAssignment.csproj.CoreCompileInputs.cache
+D:\Mobile Development\FinalAssignment\FinalAssignment\obj\Debug\net9.0-android\FinalAssignment.sourcelink.json
 D:\Mobile Development\FinalAssignment\FinalAssignment\bin\Debug\net9.0-android\FinalAssignment.runtimeconfig.json
 D:\Mobile Development\FinalAssignment\FinalAssignment\bin\Debug\net9.0-android\FinalAssignment.dll
 D:\Mobile Development\FinalAssignment\FinalAssignment\bin\Debug\net9.0-android\FinalAssignment.pdb

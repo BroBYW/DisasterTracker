@@ -24,15 +24,21 @@
         </Border>
 
         <VerticalStackLayout Grid.Row="1" Spacing="8">
-            <Frame Padding="0" BackgroundColor="#333" BorderColor="Gray">
+            <Border Stroke="Gray" 
+            StrokeThickness="1" 
+            BackgroundColor="#333" 
+            Padding="0" 
+            StrokeShape="RoundRectangle 5">
+
                 <Picker Title="Select Disaster Type" 
-                        ItemsSource="{Binding DisasterTypes}" 
-                        SelectedItem="{Binding SelectedDisasterType}" 
-                        TextColor="White" TitleColor="#AAAAAA"
-                        HorizontalTextAlignment="Center"/>
-            </Frame>
+                ItemsSource="{Binding DisasterTypes}" 
+                SelectedItem="{Binding SelectedDisasterType}" 
+                TextColor="White" TitleColor="#AAAAAA"
+                HorizontalTextAlignment="Center"/>
+            </Border>
+
             <Button Text="SAVE &amp; PIN LOCATION" Command="{Binding SaveLogCommand}" 
-                    BackgroundColor="#FF4444" FontAttributes="Bold"/>
+            BackgroundColor="#FF4444" FontAttributes="Bold"/>
         </VerticalStackLayout>
 
         <Grid Grid.Row="2">
@@ -54,11 +60,15 @@
             <CollectionView ItemsSource="{Binding IncidentHistory}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame BackgroundColor="#333" Padding="10" Margin="0,2">
+                        <Border BackgroundColor="#333" 
+                        Padding="10" 
+                        Margin="0,2" 
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0">
 
-                            <Frame.GestureRecognizers>
+                            <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnItemTapped" NumberOfTapsRequired="1" />
-                            </Frame.GestureRecognizers>
+                            </Border.GestureRecognizers>
 
                             <Grid ColumnDefinitions="*, Auto">
                                 <VerticalStackLayout>
@@ -68,7 +78,7 @@
                                 <Label Grid.Column="1" Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}" 
                                TextColor="Gray" VerticalOptions="Center"/>
                             </Grid>
-                        </Frame>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

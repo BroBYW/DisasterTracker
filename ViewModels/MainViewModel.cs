@@ -68,10 +68,22 @@ namespace FinalAssignment.ViewModels
         }
 
         [RelayCommand]
-        public async Task InitializeSensorsAsync()
+        public Task InitializeSensorsAsync() // <--- REMOVED 'async'
         {
             var access = Connectivity.Current.NetworkAccess;
-            ConnectivityStatus = access == NetworkAccess.Internet ? "ONLINE" : "OFFLINE";
+
+            if (access == NetworkAccess.Internet)
+            {
+                ConnectivityStatus = "ONLINE";     
+            }
+            else
+            {
+                ConnectivityStatus = "OFFLINE MODE";
+
+            }
+
+            // Tells the caller "I am done immediately"
+            return Task.CompletedTask;
         }
 
         [RelayCommand]
