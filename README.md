@@ -18,7 +18,7 @@ The application allows users to:
 
 ---
 
-## 🚀 Key Features (Rubric Coverage)
+## 🚀 Key Features 
 
 ### ✅ Geospatial Data & UI 
 * **Real-Time Connectivity:** The app checks for internet access upon launch and updates instantly if the status changes (Online/Offline).
@@ -37,14 +37,13 @@ The application allows users to:
 ## 🛠️ Technologies Used
 * **Framework:** .NET MAUI (Multi-platform App UI) 
 * **Language:** C#
-* **Database:** SQLite (`sqlite-net-pcl`) [cite: 11]
+* **Database:** SQLite (`sqlite-net-pcl`) 
 * **Maps:** `Microsoft.Maui.Controls.Maps`
 * **Sensors:** `Microsoft.Maui.Devices.Sensors` & `Connectivity` 
 
 ---
 
 # 📸 Screenshots
-*(Please ensure your system date/time is visible in these screenshots as per assignment requirements)*
 
 ### Core Features
 | **Main Interface (Q1)** | **Validation Alert (Q2)** |
