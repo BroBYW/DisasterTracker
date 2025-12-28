@@ -28,10 +28,14 @@ namespace FinalAssignment.ViewModels
         [ObservableProperty]
         string selectedDisasterType;
 
+        // User Input for the Trip ID / Nickname (Required for Q2)
+        [ObservableProperty]
+        string tripIdInput;
+
+        // Used for displaying the ID of a selected historical pin
         [ObservableProperty]
         string incidentId;
 
-        // NEW: Controls visibility of the ID in the top-right
         [ObservableProperty]
         bool isIdVisible;
 
@@ -41,8 +45,12 @@ namespace FinalAssignment.ViewModels
         [ObservableProperty]
         string longitudeDisplay = "...";
 
+        // Required for Q1b - Displaying Connectivity
         [ObservableProperty]
         string connectivityStatus = "Checking...";
+
+        [ObservableProperty]
+        Color connectivityColor = Colors.Gray;
 
         public MainViewModel(DatabaseService dbService)
         {
@@ -50,25 +58,17 @@ namespace FinalAssignment.ViewModels
             IncidentHistory = new ObservableCollection<IncidentLog>();
             MapPins = new ObservableCollection<Pin>();
 
-            // Don't generate ID here. Start hidden.
             IsIdVisible = false;
 
+            // Load data and setup sensors
             Task.Run(LoadDataAsync);
             InitializeSensorsAsync();
-        }
-
-        // Helper to generate the ID string
-        private string GenerateIdString()
-        {
-            return $"SOS-{Guid.NewGuid().ToString().Substring(0, 4).ToUpper()}";
         }
 
         public void ResetLocationDisplay()
         {
             LatitudeDisplay = "Drag Map to Select";
             LongitudeDisplay = "...";
-
-            // Hide the ID when resetting to input mode
             IncidentId = string.Empty;
             IsIdVisible = false;
         }
@@ -82,36 +82,64 @@ namespace FinalAssignment.ViewModels
         [RelayCommand]
         public Task InitializeSensorsAsync()
         {
-            var access = Connectivity.Current.NetworkAccess;
-            if (access == NetworkAccess.Internet)
-                ConnectivityStatus = "ONLINE";
-            else
-                ConnectivityStatus = "OFFLINE MODE";
+            // Initial check
+            UpdateConnectivity(Connectivity.Current.NetworkAccess);
+
+            // Listener for real-time updates (Scenario implies real-time data)
+            Connectivity.Current.ConnectivityChanged += (sender, e) =>
+            {
+                UpdateConnectivity(e.NetworkAccess);
+            };
 
             return Task.CompletedTask;
+        }
+
+        private void UpdateConnectivity(NetworkAccess access)
+        {
+            if (access == NetworkAccess.Internet)
+            {
+                ConnectivityStatus = "ONLINE";
+                ConnectivityColor = Colors.Green;
+            }
+            else
+            {
+                ConnectivityStatus = "OFFLINE";
+                ConnectivityColor = Colors.Red;
+            }
         }
 
         [RelayCommand]
         public async Task SaveLogAsync()
         {
+            // 1. Validation Logic (Required for Q2 and Q1a Rubric)
+            if (string.IsNullOrWhiteSpace(TripIdInput))
+            {
+                await Application.Current.MainPage.DisplayAlert("Validation Error", "Please enter a Trip ID or Nickname.", "OK");
+                return;
+            }
+
+            if (TripIdInput.Length < 3 || !TripIdInput.All(char.IsLetterOrDigit))
+            {
+                await Application.Current.MainPage.DisplayAlert("Validation Error", "Trip ID must be at least 3 alphanumeric characters.", "OK");
+                return;
+            }
+
             if (string.IsNullOrEmpty(SelectedDisasterType))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Select Type", "OK");
+                await Application.Current.MainPage.DisplayAlert("Validation Error", "Please select a Disaster Type.", "OK");
                 return;
             }
 
             if (LatitudeDisplay.StartsWith("Drag"))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Drag map to location", "OK");
+                await Application.Current.MainPage.DisplayAlert("Location Error", "Please drag the map to pinpoint the location.", "OK");
                 return;
             }
 
-            // Generate ID specifically for this Save
-            string newId = GenerateIdString();
-
+            // 2. Save Data
             var newLog = new IncidentLog
             {
-                IncidentId = newId,
+                IncidentId = TripIdInput.ToUpper(), // User defined ID
                 DisasterType = SelectedDisasterType,
                 LocationCoordinates = $"{LatitudeDisplay},{LongitudeDisplay}",
                 Timestamp = DateTime.Now,
@@ -123,25 +151,20 @@ namespace FinalAssignment.ViewModels
             IncidentHistory.Insert(0, newLog);
             AddPinToMap(newLog);
 
-            await Application.Current.MainPage.DisplayAlert("Saved", "Incident Logged", "OK");
+            await Application.Current.MainPage.DisplayAlert("Success", "Incident Logged Successfully", "OK");
 
-            // Reset UI for next input
+            // 3. Reset UI
+            TripIdInput = string.Empty; // Clear input field
             SelectedDisasterType = null;
-            // Note: We do NOT show the ID after saving, we just go back to clean input state.
         }
 
         public async Task DeleteLogAsync(IncidentLog log)
         {
             if (log == null) return;
-
             await _dbService.DeleteLogAsync(log);
             IncidentHistory.Remove(log);
-
             var pinToRemove = MapPins.FirstOrDefault(p => p.Address == log.IncidentId);
-            if (pinToRemove != null)
-            {
-                MapPins.Remove(pinToRemove);
-            }
+            if (pinToRemove != null) MapPins.Remove(pinToRemove);
         }
 
         private async Task LoadDataAsync()

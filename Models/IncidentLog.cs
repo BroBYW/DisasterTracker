@@ -8,7 +8,6 @@ namespace FinalAssignment.Models
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
-        // Added '?' to make them nullable and fix the warnings
         public string? IncidentId { get; set; }
         public string? DisasterType { get; set; }
         public string? LocationCoordinates { get; set; }
