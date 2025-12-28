@@ -25,7 +25,7 @@ The application allows users to:
 * **Geolocation Display:** Displays the device's current Latitude and Longitude with high precision.
 * **Responsive UI:** Uses a `Grid` layout to organize data clearly, ensuring the "Network Status" and "Location" are always visible at the top.
 
-### [cite_start]✅ Secure Offline Persistence & Validation 
+### ✅ Secure Offline Persistence & Validation 
 * **SQLite Integration:** Implements a full CRUD (Create, Read, Delete) architecture using `sqlite-net-pcl`.
 * **Client-Side Validation:**
     * **Trip ID Check:** Prevents saving if the Trip ID is empty or less than 3 characters.
@@ -37,19 +37,26 @@ The application allows users to:
 ## 🛠️ Technologies Used
 * **Framework:** .NET MAUI (Multi-platform App UI) 
 * **Language:** C#
-* [cite_start]**Database:** SQLite (`sqlite-net-pcl`) [cite: 11]
+* **Database:** SQLite (`sqlite-net-pcl`) [cite: 11]
 * **Maps:** `Microsoft.Maui.Controls.Maps`
-* [cite_start]**Sensors:** `Microsoft.Maui.Devices.Sensors` & `Connectivity` 
+* **Sensors:** `Microsoft.Maui.Devices.Sensors` & `Connectivity` 
 
 ---
 
-## 📸 Screenshots
+# 📸 Screenshots
+*(Please ensure your system date/time is visible in these screenshots as per assignment requirements)*
 
+### Core Features
+| **Main Interface (Q1)** | **Validation Alert (Q2)** |
+|:-----------------------:|:-------------------------:|
+| ![Main UI](screenshots/main_ui.png) | ![Validation](screenshots/validation.png) |
+| *Shows Connectivity & Location* | *Shows Error Popup for Invalid ID* |
 
-| **Main Interface (Q1)** | **Validation Alert (Q2)** | **History & Map** |
-|:-----------------------:|:-------------------------:|:-----------------:|
-| ![Main UI](screenshots/main_ui.png) | ![Validation](screenshots/validation.png) | ![History](screenshots/history.png) |
-| *Shows Connectivity & Location* | *Shows Error Popup* | *Shows Saved Pins* |
+### Data Management
+| **History Drawer** | **Incident Details Page** |
+|:------------------:|:-------------------------:|
+| ![History](screenshots/history.png) | ![Details](screenshots/detail.png) |
+| *Shows List of Saved Incidents* | *Shows Selected Log Details* |
 
 > **Note:** Screenshots are stored in the `screenshots` folder of this repository.
 

@@ -60,10 +60,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="screenshots\detail.png" />
 	  <None Remove="screenshots\main_ui.png" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Include="screenshots\detail.png" />
 	  <MauiImage Include="screenshots\main_ui.png" />
 	  <MauiImage Include="screenshots\history.png" />
 	  <MauiImage Include="screenshots\validation.png" />
