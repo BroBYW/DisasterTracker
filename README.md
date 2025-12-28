@@ -1,31 +1,31 @@
 ﻿# Disaster Tracker App (CSS3344 Final Assessment)
 
-**Student ID:** [Your Student ID Here]  
+**Student ID:** BCS23020005  
 **Course:** CSS3344 Mobile Application Development  
 **Semester:** September 2025/2026  
-[cite_start]**Domain:** SOS-Emergency Service [cite: 9]
+**Domain:** SOS-Emergency Service 
 
 ---
 
 ## 📌 Project Overview
-This project is a .NET MAUI mobile application developed for the **CSS3344 Final Individual Assessment**. [cite_start]It is designed to assist emergency response coordinators by providing real-time geospatial data acquisition and secure offline data persistence. [cite: 9, 11]
+This project is a .NET MAUI mobile application developed for the **CSS3344 Final Individual Assessment**. It is designed to assist emergency response coordinators by providing real-time geospatial data acquisition and secure offline data persistence. 
 
 The application allows users to:
-1.  [cite_start]**Monitor Connectivity:** View real-time Network Connectivity Status and Geolocation (Latitude/Longitude). [cite: 9]
-2.  [cite_start]**Log Incidents:** Save incident details (Disaster Type, Location, Time) to a local SQLite database. [cite: 11]
-3.  [cite_start]**Validate Data:** Enforce enterprise-level quality checks on User-Defined Trip IDs before saving. [cite: 11]
+1.  **Monitor Connectivity:** View real-time Network Connectivity Status and Geolocation (Latitude/Longitude). 
+2.  **Log Incidents:** Save incident details (Disaster Type, Location, Time) to a local SQLite database. 
+3.  **Validate Data:** Enforce enterprise-level quality checks on User-Defined Trip IDs before saving. 
 4.  **Visualize Data:** View historical logs on an interactive map and list.
 
 ---
 
 ## 🚀 Key Features (Rubric Coverage)
 
-### [cite_start]✅ Question 1: Geospatial Data & UI [cite: 9]
+### ✅ Geospatial Data & UI 
 * **Real-Time Connectivity:** The app checks for internet access upon launch and updates instantly if the status changes (Online/Offline).
 * **Geolocation Display:** Displays the device's current Latitude and Longitude with high precision.
 * **Responsive UI:** Uses a `Grid` layout to organize data clearly, ensuring the "Network Status" and "Location" are always visible at the top.
 
-### [cite_start]✅ Question 2: Secure Offline Persistence & Validation [cite: 11]
+### [cite_start]✅ Secure Offline Persistence & Validation 
 * **SQLite Integration:** Implements a full CRUD (Create, Read, Delete) architecture using `sqlite-net-pcl`.
 * **Client-Side Validation:**
     * **Trip ID Check:** Prevents saving if the Trip ID is empty or less than 3 characters.
@@ -35,16 +35,16 @@ The application allows users to:
 ---
 
 ## 🛠️ Technologies Used
-* [cite_start]**Framework:** .NET MAUI (Multi-platform App UI) [cite: 9]
+* **Framework:** .NET MAUI (Multi-platform App UI) 
 * **Language:** C#
 * [cite_start]**Database:** SQLite (`sqlite-net-pcl`) [cite: 11]
 * **Maps:** `Microsoft.Maui.Controls.Maps`
-* [cite_start]**Sensors:** `Microsoft.Maui.Devices.Sensors` & `Connectivity` [cite: 9]
+* [cite_start]**Sensors:** `Microsoft.Maui.Devices.Sensors` & `Connectivity` 
 
 ---
 
 ## 📸 Screenshots
-[cite_start]*(Please ensure your system date/time is visible in these screenshots as per assignment requirements)* [cite: 18]
+
 
 | **Main Interface (Q1)** | **Validation Alert (Q2)** | **History & Map** |
 |:-----------------------:|:-------------------------:|:-----------------:|
